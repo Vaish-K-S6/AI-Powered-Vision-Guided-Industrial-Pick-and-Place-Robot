@@ -1,0 +1,14 @@
+[
+    {
+        "object": "bottle",
+        "confidence": 0.905558168888092,
+        "center_x": 159.07992553710938,
+        "center_y": 183.3052215576172
+    },
+    {
+        "object": "dining table",
+        "confidence": 0.3573147654533386,
+        "center_x": 239.55633544921875,
+        "center_y": 311.37249755859375
+    }
+]
