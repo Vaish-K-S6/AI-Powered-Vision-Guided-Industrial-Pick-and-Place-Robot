@@ -25,3 +25,10 @@ Thumbs.db
 
 # macOS
 .DS_Store
+dataset/
+uploads/
+static/detected_image.jpg
+train/
+valid/
+backend/static/
+uploads/
