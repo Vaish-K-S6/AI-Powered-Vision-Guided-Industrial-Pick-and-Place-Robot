@@ -52,9 +52,9 @@ def detections():
 
 # ---------------- Live Detection ----------------
 
-@app.get("/live-detections")
-def live_detections():
-    return detect_objects()
+#@app.get("/live-detections")
+#def live_detections():
+ #   return detect_objects()
 
 # ---------------- Upload ----------------
 

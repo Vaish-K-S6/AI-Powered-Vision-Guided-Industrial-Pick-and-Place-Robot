@@ -56,16 +56,16 @@ const lastAnnouncement = useRef("");
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch(
-       "https://ai-pick-n-place-robot.onrender.com/upload-image",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+     const response = await fetch(
+  "http://127.0.0.1:8000/upload-image",
+  {
+    method: "POST",
+    body: formData,
+  }
+);
 
       const data = await response.json();
-      console.log(data);
+      console.log(data.detections);
 
       setMessage(data.message);
       setDetections(data.detections || []);
@@ -193,7 +193,7 @@ canvas.toBlob(async (blob) => {
     await new Audio("/beep.mp3").play();
 
     const response = await fetch(
-      "https://ai-pick-n-place-robot.onrender.com/live-detect",
+      "http://127.0.0.1:8000/live-detect",
       {
         method: "POST",
         body: formData,
@@ -268,6 +268,9 @@ const resetDashboard = () => {
   setLiveMode(false);
   setCameraStream(null);
 };
+const hasFailure = detections.some(
+  (item) => item.quality === "FAIL"
+);
   return (
     <div className="app">
 
@@ -368,10 +371,12 @@ const resetDashboard = () => {
 
       </div>
 
-      <ImagePanel
-        preview={preview}
-        detectedImage={detectedImage}
-      />
+      {!liveMode && (
+  <ImagePanel
+    preview={preview}
+    detectedImage={detectedImage}
+  />
+)}
 
       {/*}
       <RobotPanel
@@ -405,7 +410,7 @@ const resetDashboard = () => {
 
               <div
                 className={
-                  detections[0].confidence >= 0.8
+                  !hasFailure
                     ? "bin good active"
                     : "bin good"
                 }
@@ -417,7 +422,7 @@ const resetDashboard = () => {
 
               <div
                 className={
-                  detections[0].confidence < 0.8
+                  hasFailure
                     ? "bin reject active"
                     : "bin reject"
                 }

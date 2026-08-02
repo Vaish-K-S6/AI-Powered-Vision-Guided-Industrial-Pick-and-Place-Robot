@@ -21,7 +21,7 @@ function DetectionTable({ detections }) {
 
         <tbody>
           {detections.map((item, index) => {
-            const good = item.confidence >= 0.8;
+            const good = item.quality === "PASS";
 
             return (
               <tr key={index}>
@@ -33,9 +33,9 @@ function DetectionTable({ detections }) {
 
                 <td>{item.center_y}</td>
 
-                <td>{good ? "🟢 GOOD" : "🔴 CHECK"}</td>
+               <td>{good ? "🟢 GOOD" : "🔴 FAIL"}</td>
 
-                <td>{good ? "GOOD BIN" : "REJECT BIN"}</td>
+<td>{good ? "GOOD BIN" : "REJECT BIN"}</td>
               </tr>
             );
           })}

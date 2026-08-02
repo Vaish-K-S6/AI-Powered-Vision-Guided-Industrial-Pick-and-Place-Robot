@@ -1,12 +1,15 @@
 function StatsCards({ detections }) {
 
-  const totalObjects = detections.length > 0 ? 1 : 0;
+  const totalObjects = detections.length;
 
-const rejected =
-  detections.some((item) => item.quality === "FAIL") ? 1 : 0;
+  const passed = detections.filter(
+    (item) => item.quality === "PASS"
+  ).length;
 
-const passed =
-  totalObjects === 1 && rejected === 0 ? 1 : 0;
+  const rejected = detections.filter(
+    (item) => item.quality === "FAIL"
+  ).length;
+
   const accuracy =
     totalObjects > 0
       ? (
@@ -14,7 +17,7 @@ const passed =
             (sum, item) => sum + item.confidence,
             0
           ) /
-         detections.length *
+          totalObjects *
           100
         ).toFixed(0)
       : 0;
@@ -33,7 +36,7 @@ const passed =
       </div>
 
       <div className="stats-card">
-        <h3> Rejected</h3>
+        <h3>Rejected</h3>
         <h1>{rejected}</h1>
       </div>
 
