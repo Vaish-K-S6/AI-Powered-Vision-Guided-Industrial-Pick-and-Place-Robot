@@ -100,6 +100,6 @@ async def live_detect(file: UploadFile = File(...)):
 
     return {
         "detections": detections,
-        "detected_image": "http://127.0.0.1:8000/static/detected_image.jpg"
+        "detected_image": "/static/detected_image.jpg"
     }
     
