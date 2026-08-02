@@ -1,12 +1,7 @@
 function RobotPanel({ detections }) {
   if (!detections || detections.length === 0) {
-    return (
-      <div className="robot-panel">
-        <h2>🤖 AI Inspection Report</h2>
-        <p>No inspection performed yet.</p>
-      </div>
-    );
-  }
+  return null;
+}
 
   const object =
   detections.find(

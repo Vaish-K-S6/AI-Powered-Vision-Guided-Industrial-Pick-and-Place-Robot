@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import Header from "./components/Header";
 import ImagePanel from "./components/ImagePanel";
-import RobotPanel from "./components/RobotPanel";
+//import RobotPanel from "./components/RobotPanel";
 import DetectionTable from "./components/DetectionTable";
 import StatsCards from "./components/StatsCards";
 
@@ -245,6 +245,28 @@ const speakResult = (quality) => {
 
   window.speechSynthesis.speak(speech);
 };
+const resetDashboard = () => {
+  // Stop live detection if it's running
+  if (liveInterval.current) {
+    clearInterval(liveInterval.current);
+  }
+
+  if (cameraStream) {
+    cameraStream.getTracks().forEach((track) => track.stop());
+  }
+
+  // Reset all states
+  setSelectedFile(null);
+  setPreview(null);
+  setDetectedImage(null);
+  setDetections([]);
+  setMessage("");
+  setLoading(false);
+
+  setShowCamera(false);
+  setLiveMode(false);
+  setCameraStream(null);
+};
   return (
     <div className="app">
 
@@ -271,13 +293,19 @@ const speakResult = (quality) => {
   className="camera-btn"
   onClick={openCamera}
 >
-  📷 Camera
+   Camera
 </button>
 <button
-  className="camera-btn"
+  className="live-btn"
   onClick={startLiveDetection}
 >
-  🎥 Live Detection
+   Live Detection
+</button>
+<button
+  className="reset-btn"
+  onClick={resetDashboard}
+>
+   Reset Dashboard
 </button>
 
         {selectedFile && (
@@ -320,7 +348,7 @@ const speakResult = (quality) => {
     className="detect-btn"
     onClick={captureImage}
   >
-    📸 Capture
+     Capture
   </button>
 )}
 
@@ -329,7 +357,7 @@ const speakResult = (quality) => {
     className="detect-btn"
     onClick={stopLiveDetection}
   >
-    ⏹ Stop Live Detection
+    Stop Live Detection
   </button>
 )}
      
@@ -344,9 +372,10 @@ const speakResult = (quality) => {
         detectedImage={detectedImage}
       />
 
+      {/*}
       <RobotPanel
         detections={detections}
-      />
+      />*/}
 
       <DetectionTable
         detections={detections}

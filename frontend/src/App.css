@@ -60,24 +60,53 @@ body {
 }
 
 .choose-btn {
-  background: #2563eb;
+  background: #37a33d;
   color: white;
 }
 
 .detect-btn {
-  background: #16a34a;
+  background: #f52a2a;
   color: white;
   margin-top: 20px;
 }
 
 .choose-btn:hover {
-  background: #1d4ed8;
+  background: #73b971;
 }
 
 .detect-btn:hover {
-  background: #15803d;
+  background: hsl(102, 41%, 63%);
+}
+.camera-btn {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  background: #2563eb;
+  color: white;
+  margin-left: 12px;
 }
 
+.camera-btn:hover {
+  background: #6582d1;
+}
+.live-btn {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  background: #dd4949;
+  color: white;
+  margin-left: 12px;
+}
+
+.live-btn:hover {
+  background: #f36f6f;
+}
 .filename {
   margin-top: 20px;
   font-size: 18px;
@@ -133,39 +162,48 @@ body {
    ROBOT PANEL
 =========================== */
 
+/*
 .robot-panel {
   background: #1e293b;
-  padding: 30px;
-  border-radius: 15px;
-  margin-bottom: 50px;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 30px;
 }
 
 .robot-panel h2 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
+  font-size: 24px;
 }
 
 .info-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 12px;
 }
 
 .info-card {
   background: #0f172a;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 10px;
 }
 
 .info-card h3 {
   color: #60a5fa;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+.info-card p {
+  font-size: 16px;
+  margin: 0;
 }
 
 .full-width {
   grid-column: span 3;
   text-align: center;
 }
+*/
 /* ===========================
    DETECTION TABLE
 =========================== */
@@ -318,7 +356,7 @@ padding:20px;
 }
 
 .stats-card {
-    background: white;
+    background: rgb(78, 82, 117);
     border-radius: 16px;
     padding: 20px;
     text-align: center;
@@ -332,13 +370,13 @@ padding:20px;
 }
 
 .stats-card h3 {
-    color: #666;
+    color: #ffffff;
     font-size: 16px;
     margin-bottom: 10px;
 }
 
 .stats-card h1 {
-    color: #1f2937;
+    color: #eaedf1;
     font-size: 34px;
     margin: 0;
 }
@@ -353,4 +391,19 @@ padding:20px;
     .stats-container {
         grid-template-columns: 1fr;
     }
+}
+.reset-btn {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  background: #363131;
+  color: white;
+  margin-left: 12px;
+}
+
+.reset-btn:hover {
+  background: #9e8181;
 }

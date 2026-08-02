@@ -41,6 +41,7 @@ def detect_objects(image_path=None):
     # AI Decision Engine
     # ----------------------------------------
 
+    
     detections = []
 
     for result in results:
@@ -56,6 +57,7 @@ def detect_objects(image_path=None):
             center_y = round(float((y1 + y2) / 2), 2)
 
             object_name = model.names[class_id]
+            
 
             # ----------------------------------------
             # INDUSTRIAL QUALITY INSPECTION
