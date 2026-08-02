@@ -6,29 +6,22 @@
 ## Overview
 This project aims to develop an AI-powered industrial robotic pick-and-place system capable of detecting, classifying, and sorting objects in a simulated manufacturing environment. The system combines Computer Vision, Artificial Intelligence, and Robotics to demonstrate intelligent industrial automation.
 
-## Objectives
-- Detect objects using AI vision.
-- Classify objects with YOLOv8.
-- Simulate robotic pick-and-place operations.
-- Control robot movement using ROS2.
-- Visualize the complete workflow in Gazebo.
-- Provide a web dashboard to monitor the system.
+ Live Demo
 
-## Planned Technologies
-- Python
-- ROS2
-- Gazebo
-- OpenCV
-- YOLOv8
-- MoveIt2
-- FastAPI
-- React
-- Git
-- Docker
+**Try the application here:**
+https://your-vercel-link.vercel.app
 
-## Project Structure
-- Robotics Simulation
-- AI Vision Module
-- Robot Control Module
-- Backend API
-- Frontend Dashboard
+> **Note:** For the best experience, please open the application on a desktop or laptop browser.
+
+
+## 🧪 Test Instructions
+
+Use any one of the following sample objects for testing:
+
+- Plastic Water Bottle (Supported)
+- (More objects coming soon)
+
+For the best results:
+- Keep the object clearly visible.
+- Use good lighting.
+- Place the object against a plain background.
