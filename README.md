@@ -6,7 +6,7 @@ https://ai-powered-vision-guided-industrial.vercel.app
 > **Note:** If the live demo does not load due to deployment limitations, please refer to the demonstration video below.
 
 ## 🎥 Project Demonstration Video
-https://drive.google.com/file/d/1xDsZaNZZ-nNrY4MAWhQEkwgV8ik6ogi-/view?usp=sharing)
+https://drive.google.com/file/d/1xDsZaNZZ-nNrY4MAWhQEkwgV8ik6ogi-/view?usp=sharing
 
 
 
