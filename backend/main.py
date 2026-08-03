@@ -82,7 +82,7 @@ async def upload_image(file: UploadFile = File(...)):
         "message": "Image uploaded successfully!",
         "filename": safe_filename,
         "detections": detections,
-        "detected_image": "http://127.0.0.1:8000/static/detected_image.jpg"
+       "detected_image": "https://ai-pick-n-place-robot.onrender.com/static/detected_image.jpg"
     }
     
 @app.post("/live-detect")
