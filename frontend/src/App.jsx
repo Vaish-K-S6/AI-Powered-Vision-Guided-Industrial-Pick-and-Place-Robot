@@ -57,7 +57,7 @@ const lastAnnouncement = useRef("");
 
     try {
      const response = await fetch(
-  "https://ai-pick-n-place-robot.onrender.com/upload-image",
+  "http://127.0.0.1:8000/upload-image",
   {
     method: "POST",
     body: formData,
@@ -193,7 +193,7 @@ canvas.toBlob(async (blob) => {
     await new Audio("/beep.mp3").play();
 
     const response = await fetch(
-      "https://ai-pick-n-place-robot.onrender.com/live-detect",
+      "http://127.0.0.1:8000/live-detect",
       {
         method: "POST",
         body: formData,

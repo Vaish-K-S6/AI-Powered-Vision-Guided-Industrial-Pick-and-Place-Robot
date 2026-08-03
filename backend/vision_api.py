@@ -2,107 +2,87 @@ from ultralytics import YOLO
 from pathlib import Path
 import cv2
 
-MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "best.pt"
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+
+MODEL_PATH = PROJECT_ROOT / "models" / "best.pt"
+
 model = YOLO(str(MODEL_PATH))
 
 
-def detect_objects(image_path=None):
+def detect_objects(image_path):
 
-    if image_path is None:
-
-        upload_folder = Path("uploads")
-        images = list(upload_folder.glob("*"))
-
-        if not images:
-            return []
-
-        image_path = max(images, key=lambda x: x.stat().st_mtime)
-
-    image_path = Path(image_path)
-
-    print(f"Processing: {image_path}")
-
-    # Faster inference on Render
-    results = model(
-        str(image_path),
-        imgsz=320,
+    results = model.predict(
+        source=str(image_path),
+        imgsz=640,
+        conf=0.35,
         verbose=False
     )
 
-    # ----------------------------------------
-    # Save Annotated Image
-    # ----------------------------------------
+    result = results[0]
 
-    output_folder = Path("static")
-    output_folder.mkdir(parents=True, exist_ok=True)
+    static_dir = BASE_DIR / "static"
+    static_dir.mkdir(parents=True, exist_ok=True)
 
-    output_path = output_folder / "detected_image.jpg"
+    output_path = static_dir / "detected_image.jpg"
 
-    annotated = results[0].plot()
+    annotated = result.plot()
 
     cv2.imwrite(str(output_path), annotated)
 
-    # ----------------------------------------
-    # AI Decision Engine
-    # ----------------------------------------
-
     detections = []
 
-    for result in results:
+    defect_classes = [
+        "cap missing",
+        "label missing",
+        "damaged plastic"
+    ]
 
-        for box in result.boxes:
+    for box in result.boxes:
 
-            class_id = int(box.cls[0])
-            confidence = round(float(box.conf[0]), 2)
+        class_id = int(box.cls[0])
 
-            x1, y1, x2, y2 = box.xyxy[0]
+        object_name = model.names[class_id]
 
-            center_x = round(float((x1 + x2) / 2), 2)
-            center_y = round(float((y1 + y2) / 2), 2)
+        confidence = round(float(box.conf[0]), 2)
 
-            object_name = model.names[class_id]
+        x1, y1, x2, y2 = box.xyxy[0]
 
-            # ----------------------------------------
-            # INDUSTRIAL QUALITY INSPECTION
-            # ----------------------------------------
+        center_x = round(float((x1 + x2) / 2), 2)
+        center_y = round(float((y1 + y2) / 2), 2)
 
-            defect_classes = [
-                "cap missing",
-                "label missing",
-                "damaged plastic"
-            ]
+        if object_name.lower() in defect_classes:
 
-            if object_name.lower() in defect_classes:
+            quality = "FAIL"
+            destination = "REJECT BIN"
+            robot_action = "REJECT PRODUCT"
+            reason = f"{object_name.title()} detected."
 
-                quality = "FAIL"
-                destination = "REJECT BIN"
-                robot_action = "REJECT PRODUCT"
-                robot_status = "REJECT"
+        else:
 
-                reason = f"{object_name.title()} detected."
+            quality = "PASS"
+            destination = "GOOD BIN"
+            robot_action = "PICK PRODUCT"
+            reason = "Bottle passed quality inspection."
 
-            else:
+        detections.append({
 
-                quality = "PASS"
-                destination = "GOOD BIN"
-                robot_action = "PICK PRODUCT"
-                robot_status = "READY FOR PICK"
+            "object": object_name,
 
-                reason = "Bottle passed quality inspection."
+            "confidence": confidence,
 
-            detections.append({
+            "center_x": center_x,
 
-                "object": object_name,
-                "confidence": confidence,
-                "center_x": center_x,
-                "center_y": center_y,
+            "center_y": center_y,
 
-                "quality": quality,
-                "destination": destination,
-                "robot_action": robot_action,
-                "robot_status": robot_status,
-                "reason": reason
+            "quality": quality,
 
-            })
+            "destination": destination,
+
+            "robot_action": robot_action,
+
+            "reason": reason
+
+        })
 
     return detections

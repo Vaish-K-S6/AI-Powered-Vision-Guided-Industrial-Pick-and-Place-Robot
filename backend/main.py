@@ -3,15 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 import shutil
-import json
 import uuid
 from pathlib import Path
 
 from vision_api import detect_objects
 
-app = FastAPI()
+app = FastAPI(title="SmartPick Backend")
 
-# ---------------- CORS ----------------
+# ------------------------------------------------
+# CORS
+# ------------------------------------------------
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,85 +22,74 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---------------- Static Files ----------------
+# ------------------------------------------------
+# Folders
+# ------------------------------------------------
 
-Path("static").mkdir(exist_ok=True)
+BASE_DIR = Path(__file__).resolve().parent
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+UPLOAD_DIR = BASE_DIR / "uploads"
+STATIC_DIR = BASE_DIR / "static"
 
-# ---------------- Home ----------------
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# ------------------------------------------------
+# Home
+# ------------------------------------------------
 
 @app.get("/")
 def home():
     return {
-        "project": "AI-Powered Vision Guided Industrial Pick-and-Place Robot",
-        "status": "Running Successfully",
-        "developer": "Vaishnavi"
+        "project": "SmartPick",
+        "status": "Backend Running"
     }
 
-# ---------------- Previous Detections ----------------
-
-@app.get("/detections")
-def detections():
-
-    file_path = Path("vision/detections.json")
-
-    if not file_path.exists():
-        return []
-
-    with open(file_path, "r") as file:
-        return json.load(file)
-
-# ---------------- Live Detection ----------------
-
-#@app.get("/live-detections")
-#def live_detections():
- #   return detect_objects()
-
-# ---------------- Upload ----------------
+# ------------------------------------------------
+# Upload Image
+# ------------------------------------------------
 
 @app.post("/upload-image")
 async def upload_image(file: UploadFile = File(...)):
-
-    upload_dir = Path("uploads")
-    upload_dir.mkdir(exist_ok=True)
 
     extension = Path(file.filename).suffix
 
     if extension == "":
         extension = ".jpg"
 
-    safe_filename = f"{uuid.uuid4().hex}{extension}"
+    filename = f"{uuid.uuid4().hex}{extension}"
 
-    file_path = upload_dir / safe_filename
+    image_path = UPLOAD_DIR / filename
 
-    with open(file_path, "wb") as buffer:
+    with open(image_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    detections = detect_objects(str(file_path))
+    detections = detect_objects(str(image_path))
 
     return {
-        "message": "Image uploaded successfully!",
-        "filename": safe_filename,
+        "message": "Image uploaded successfully",
+        "filename": filename,
         "detections": detections,
-       "detected_image": "https://ai-pick-n-place-robot.onrender.com/static/detected_image.jpg"
+        "detected_image": "http://127.0.0.1:8000/static/detected_image.jpg"
     }
-    
+
+# ------------------------------------------------
+# Live Detection
+# ------------------------------------------------
+
 @app.post("/live-detect")
 async def live_detect(file: UploadFile = File(...)):
 
-    upload_dir = Path("uploads")
-    upload_dir.mkdir(exist_ok=True)
+    image_path = UPLOAD_DIR / "live_frame.jpg"
 
-    file_path = upload_dir / "live_frame.jpg"
-
-    with open(file_path, "wb") as buffer:
+    with open(image_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    detections = detect_objects(str(file_path))
+    detections = detect_objects(str(image_path))
 
     return {
         "detections": detections,
-        "detected_image": "/static/detected_image.jpg"
+        "detected_image": "http://127.0.0.1:8000/static/detected_image.jpg"
     }
-    
